@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
           '/main': (context) => MainPage(),
           '/affirmation': (context) => AffirmationPage(),
           '/addmedical': (context) => AddMedicalPage(),
+          '/editprofile': (context) => EditProfilePage(),
         },
       ),
     );

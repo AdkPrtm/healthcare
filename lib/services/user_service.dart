@@ -3,6 +3,7 @@ part of 'services.dart';
 class UserService {
   CollectionReference _collectionReference =
       FirebaseFirestore.instance.collection('users');
+  FirebaseStorage storage = FirebaseStorage.instance;
 
   Future<void> addUser(UserModel user) async {
     try {
@@ -26,6 +27,32 @@ class UserService {
         email: snapshot['email'],
         imageUrl: snapshot['imageUrl'],
       );
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> updateUser(
+      {required String uid,
+      required String name,
+      String pickedImage = ''}) async {
+    Reference storageRef = storage.ref('$uid.png');
+    // _collectionReference.doc(userModel.id).update(data)
+    try {
+      if (pickedImage != '') {
+        print(pickedImage);
+        await storageRef.putFile(File(pickedImage));
+        final imageUrl = await storageRef.getDownloadURL();
+        print(imageUrl);
+        _collectionReference.doc(uid).update({
+          'name': name,
+          'imageUrl': imageUrl,
+        });
+      } else {
+        _collectionReference.doc(uid).update({
+          'name': name,
+        });
+      }
     } catch (e) {
       throw e;
     }

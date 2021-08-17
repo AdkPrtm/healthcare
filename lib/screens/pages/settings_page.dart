@@ -39,52 +39,56 @@ class SettingPage extends StatelessWidget {
                     return Center(
                       child: Column(
                         children: [
-                          Stack(
-                            children: [
-                              Container(
-                                height: 112,
-                                width: 112,
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: kPrimaryColor6),
-                                child: Container(
+                          GestureDetector(
+                            onTap: () =>
+                                Navigator.pushNamed(context, '/editprofile'),
+                            child: Stack(
+                              children: [
+                                Container(
+                                  height: 112,
+                                  width: 112,
+                                  padding: EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      image: state.userModel.imageUrl == ''
-                                          ? AssetImage(
-                                              'assets/images/avatar.png')
-                                          : NetworkImage(
-                                                  state.userModel.imageUrl)
-                                              as ImageProvider,
-                                      fit: BoxFit.cover,
+                                      shape: BoxShape.circle,
+                                      color: kPrimaryColor6),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                        image: state.userModel.imageUrl == ''
+                                            ? AssetImage(
+                                                'assets/images/avatar.png')
+                                            : NetworkImage(
+                                                    state.userModel.imageUrl)
+                                                as ImageProvider,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                right: 0,
-                                child: Container(
-                                  height: 36,
-                                  width: 36,
-                                  padding: EdgeInsets.all(7),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: kBackgroundColor,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        blurRadius: 10,
-                                        offset: Offset(0, 3),
-                                      ),
-                                    ],
+                                Positioned(
+                                  bottom: 0,
+                                  right: 0,
+                                  child: Container(
+                                    height: 36,
+                                    width: 36,
+                                    padding: EdgeInsets.all(7),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: kBackgroundColor,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          blurRadius: 10,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: SvgPicture.asset(svgEdit),
                                   ),
-                                  child: SvgPicture.asset(svgEdit),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           SizedBox(height: 12),
                           Text(
@@ -119,7 +123,9 @@ class SettingPage extends StatelessWidget {
                 },
               ),
               SizedBox(height: 32),
-              ListEditWidget(title: 'Account', svgAsset: svgPerson),
+              GestureDetector(
+                onTap: () => Navigator.pushNamed(context, '/editprofile'),
+                child: ListEditWidget(title: 'Account', svgAsset: svgPerson)),
               Divider(),
               ListEditWidget(title: 'Notificantion', svgAsset: svgNotification),
               Divider(),

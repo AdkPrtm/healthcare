@@ -7,9 +7,10 @@ class UserModel extends Equatable {
       required this.name,
       required this.email,
       required this.imageUrl});
-  UserModel copyWith({required String imageUrl}) => UserModel(
+  UserModel copyWith({required String imageUrl, required String name}) =>
+      UserModel(
         id: this.id,
-        name: this.name,
+        name: name,
         email: this.email,
         imageUrl: imageUrl,
       );

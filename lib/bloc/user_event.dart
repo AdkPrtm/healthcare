@@ -28,3 +28,12 @@ class SignInUser extends UserEvent {
   @override
   List<Object?> get props => [email, password];
 }
+
+class UpdateDataUser extends UserEvent {
+  final String uid, name, imageUrl;
+
+  UpdateDataUser(this.uid, this.name, this.imageUrl);
+
+  @override
+  List<Object?> get props => [uid, name, imageUrl];
+}

@@ -40,6 +40,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         UserModel? userModel = result.userModel;
         yield UserSuccess(userModel!);
       }
-    } 
+    } else if (event is UpdateDataUser) {
+      yield UserLoading();
+      await UserService().updateUser(
+          uid: event.uid, name: event.name, pickedImage: event.imageUrl);
+      UserModel userModel = await UserService().getUserById(event.uid);
+      yield UserSuccess(userModel);
+    }
   }
 }
