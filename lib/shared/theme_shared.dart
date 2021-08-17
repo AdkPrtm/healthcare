@@ -32,6 +32,5 @@ const svgLines = 'assets/svg/Lines.svg';
 const svgPerson = 'assets/svg/Person.svg';
 const svgEye = 'assets/svg/Eye.svg';
 const svgSecurity = 'assets/svg/Security.svg';
-const svgVolume = 'assets/svg/Volume.svg';
-const svgLanguage = 'assets/svg/Language.svg';
+const svgLogout = 'assets/svg/Logout.svg';
 const svgEdit = 'assets/svg/Edit.svg';

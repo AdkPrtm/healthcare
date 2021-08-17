@@ -49,32 +49,69 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     Widget loginButton() {
-      return Container(
-        margin: EdgeInsets.symmetric(vertical: 24),
-        height: 42,
-        width: double.infinity,
-        child: TextButton(
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              print('berhasil');
-              Navigator.pushNamedAndRemoveUntil(
-                  context, '/main', (route) => false);
-            }
-          },
-          style: TextButton.styleFrom(
-              backgroundColor: kPrimaryColor1,
-              shape: RoundedRectangleBorder(
+      return BlocConsumer<UserBloc, UserState>(
+        listener: (context, state) {
+          if (state is UserSuccess) {
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/main', (route) => false);
+          } else if (state is UserFailed) {
+            var msg = state.msg ?? '';
+            CustomWidgets.buildErrorSnackbar(context, msg);
+          }
+        },
+        builder: (context, state) {
+          if (state is UserLoading) {
+            return Container(
+              margin: EdgeInsets.symmetric(vertical: 24),
+              height: 42,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: kPrimaryColor1,
                 borderRadius: BorderRadius.circular(8),
-              )),
-          child: Text(
-            'Login',
-            style: textStyle.copyWith(
-              fontSize: 16,
-              fontWeight: semiBold,
-              color: kBackgroundColor,
+              ),
+              child: Center(
+                child: Container(
+                  height: 18,
+                  width: 18,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: kBackgroundColor,
+                  ),
+                ),
+              ),
+            );
+          }
+          return Container(
+            margin: EdgeInsets.symmetric(vertical: 24),
+            height: 42,
+            width: double.infinity,
+            child: TextButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  context.read<UserBloc>().add(
+                        SignInUser(
+                          emailController.text,
+                          passwordController.text,
+                        ),
+                      );
+                }
+              },
+              style: TextButton.styleFrom(
+                  backgroundColor: kPrimaryColor1,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  )),
+              child: Text(
+                'Login',
+                style: textStyle.copyWith(
+                  fontSize: 16,
+                  fontWeight: semiBold,
+                  color: kBackgroundColor,
+                ),
+              ),
             ),
-          ),
-        ),
+          );
+        },
       );
     }
 
@@ -161,3 +198,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+

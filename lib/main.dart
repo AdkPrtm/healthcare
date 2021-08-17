@@ -1,8 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthcare/bloc/medicalhistory_bloc.dart';
+import 'package:healthcare/bloc/user_bloc.dart';
 import 'package:healthcare/screens/pages/pages.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -15,18 +21,25 @@ class MyApp extends StatelessWidget {
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
     ));
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Health Care',
-      routes: {
-        '/': (context) => SplashPage(),
-        '/intro': (context) => IntroductionPage(),
-        '/menu': (context) => MenuLoginPage(),
-        '/login': (context) => LoginPage(),
-        '/signup': (context) => SignUpPage(),
-        '/main': (context) => MainPage(),
-        '/affirmation': (context) => AffirmationPage(),
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => UserBloc()),
+        BlocProvider(create: (context) => MedicalhistoryBloc()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Health Care',
+        routes: {
+          '/': (context) => SplashPage(),
+          '/intro': (context) => IntroductionPage(),
+          '/menu': (context) => MenuLoginPage(),
+          '/login': (context) => LoginPage(),
+          '/signup': (context) => SignUpPage(),
+          '/main': (context) => MainPage(),
+          '/affirmation': (context) => AffirmationPage(),
+          '/addmedical': (context) => AddMedicalPage(),
+        },
+      ),
     );
   }
 }

@@ -12,7 +12,7 @@ class ListEditWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 24),
+      margin: EdgeInsets.only(bottom: 3, top: 3),
       child: Row(
         children: [
           SvgPicture.asset(svgAsset, width: 14),

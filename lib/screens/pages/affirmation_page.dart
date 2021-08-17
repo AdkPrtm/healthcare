@@ -1,12 +1,23 @@
 part of 'pages.dart';
 
-class AffirmationPage extends StatelessWidget {
+class AffirmationPage extends StatefulWidget {
   const AffirmationPage({Key? key}) : super(key: key);
+
+  @override
+  _AffirmationPageState createState() => _AffirmationPageState();
+}
+
+class _AffirmationPageState extends State<AffirmationPage> {
+  @override
+  void initState() {
+    context.read<MedicalhistoryBloc>().add(FetchMedicalHistory());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    Widget content() {
+    Widget content(List<MedicalHistoryModel> state) {
       return ListView(
         shrinkWrap: true,
         children: [
@@ -47,36 +58,14 @@ class AffirmationPage extends StatelessWidget {
               color: kPrimaryColor6,
             ),
             child: Column(
-              children: [
-                CardAffirmationWidget(),
-                CardAffirmationWidget(),
-                CardAffirmationWidget(),
-                CardAffirmationWidget(),
-                CardAffirmationWidget(),
-                CardAffirmationWidget(),
-                CardAffirmationWidget(),
-                CardAffirmationWidget(),
-              ],
+              children: state
+                  .map((MedicalHistoryModel medicalHistoryModel) =>
+                      CardAffirmationWidget(
+                        description: medicalHistoryModel.description,
+                        checkDate: medicalHistoryModel.checkDate,
+                      ))
+                  .toList(),
             ),
-            // child: GridView(
-            //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            //     crossAxisCount: 2,
-            //     mainAxisSpacing: 10,
-            //     crossAxisSpacing: 11,
-            //     childAspectRatio: 2 / 3,
-            //   ),
-            // children: [
-            //   Container(
-            //     height: 176,
-            //     width: 166,
-            //     decoration: BoxDecoration(
-            //       color: kBackgroundColor,
-            //       borderRadius: BorderRadius.circular(12),
-            //     ),
-            //     child: Text('YYYyy'),
-            //   )
-            // ],
-            // ),
           ),
         ],
       );
@@ -158,11 +147,31 @@ class AffirmationPage extends StatelessWidget {
           color: kPrimaryColor1,
         ),
       ),
-      body: isEmpty(),
+      body: BlocConsumer<MedicalhistoryBloc, MedicalhistoryState>(
+        listener: (context, state) {
+          if (state is MedicalhistoryFailed) {
+            var msg = state.msg ?? 'Failed Fetch Data';
+            CustomWidgets.buildErrorSnackbar(context, msg);
+          }
+        },
+        builder: (context, state) {
+          if (state is MedicalhistoryLoading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is MedicalhistorySuccess) {
+            return content(state.medicalHistoryModel);
+          } else {
+            return isEmpty();
+          }
+        },
+      ),
       floatingActionButton: Theme(
         data: Theme.of(context).copyWith(highlightColor: kSecondaryColor),
         child: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, '/addmedical');
+          },
           backgroundColor: kSecondaryColor,
           hoverColor: kSecondaryColor,
           focusColor: kSecondaryColor,

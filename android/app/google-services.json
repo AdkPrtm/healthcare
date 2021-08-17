@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "262286168102",
+    "project_id": "healthcare-a2203",
+    "storage_bucket": "healthcare-a2203.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:262286168102:android:1f7de29e8a306fb55f96e7",
+        "android_client_info": {
+          "package_name": "com.andhika.healthcare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "262286168102-r1oiggilgl5m8bvsv7isbv72d426knbo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.andhika.healthcare",
+            "certificate_hash": "596e65bbd02e622fa6bac055577fe3dbfcdb4427"
+          }
+        },
+        {
+          "client_id": "262286168102-vldg8tgill534oqa1pv4529m6lu53ogs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuJiNwsLQRq-Yw2duGws2W8kMJrPOSgNQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "262286168102-vldg8tgill534oqa1pv4529m6lu53ogs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -21,11 +21,17 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  cloud_firestore: ^2.4.0
   cupertino_icons: ^1.0.2
+  equatable: ^2.0.3
+  firebase_auth: ^3.0.1
+  firebase_core: ^1.4.0
   flutter:
     sdk: flutter
+  flutter_bloc: ^7.1.0
   flutter_svg: ^0.22.0
   google_fonts: ^2.1.0
+  intl: ^0.17.0
   lottie: ^1.1.0
 
 dev_dependencies:
