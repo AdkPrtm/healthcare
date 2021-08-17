@@ -23,9 +23,9 @@ class MedicalService {
     }
   }
 
-  Future<List<MedicalHistoryModel>> fetchMedicalHistory() async {
+  Future<List<MedicalHistoryModel>> fetchMedicalHistory(String uid) async {
     try {
-      QuerySnapshot result = await _collectionReference.get();
+      QuerySnapshot result = await _collectionReference.where('uid', isEqualTo: uid).get();
       List<MedicalHistoryModel> medicalHistory = result.docs
           .map((snapshot) => MedicalHistoryModel.fromJson(
               snapshot.data() as Map<String, dynamic>))
@@ -34,7 +34,8 @@ class MedicalService {
           b.checkDate.compareTo(a.checkDate));
       return medicalHistory;
     } catch (e) {
-      throw e;
+      List<MedicalHistoryModel> list = [];
+      return list;
     }
   }
 }

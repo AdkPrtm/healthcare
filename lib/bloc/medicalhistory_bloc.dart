@@ -19,9 +19,11 @@ class MedicalhistoryBloc
     if (event is FetchMedicalHistory) {
       yield MedicalhistoryLoading();
       List<MedicalHistoryModel> medicalHistory =
-          await MedicalService().fetchMedicalHistory();
+          await MedicalService().fetchMedicalHistory(event.uid);
       if (medicalHistory.isNotEmpty) {
         yield MedicalhistorySuccess(medicalHistoryModel: medicalHistory);
+      } else {
+        yield MedicalhistorySuccess(medicalHistoryModel: []);
       }
     } else if (event is AddMedicalHistory) {
       yield MedicalhistoryLoading();

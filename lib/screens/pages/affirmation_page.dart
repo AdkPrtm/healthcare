@@ -1,7 +1,9 @@
 part of 'pages.dart';
 
 class AffirmationPage extends StatefulWidget {
-  const AffirmationPage({Key? key}) : super(key: key);
+  const AffirmationPage({Key? key, required this.uid}) : super(key: key);
+
+  final String uid;
 
   @override
   _AffirmationPageState createState() => _AffirmationPageState();
@@ -10,7 +12,7 @@ class AffirmationPage extends StatefulWidget {
 class _AffirmationPageState extends State<AffirmationPage> {
   @override
   void initState() {
-    context.read<MedicalhistoryBloc>().add(FetchMedicalHistory());
+    context.read<MedicalhistoryBloc>().add(FetchMedicalHistory(widget.uid));
     super.initState();
   }
 
@@ -157,12 +159,22 @@ class _AffirmationPageState extends State<AffirmationPage> {
         builder: (context, state) {
           if (state is MedicalhistoryLoading) {
             return Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                color: kPrimaryColor1,
+              ),
             );
           } else if (state is MedicalhistorySuccess) {
-            return content(state.medicalHistoryModel);
+            if (state.medicalHistoryModel.isEmpty) {
+              return isEmpty();
+            } else {
+              return content(state.medicalHistoryModel);
+            }
           } else {
-            return isEmpty();
+            return Center(
+              child: CircularProgressIndicator(
+                color: kPrimaryColor1,
+              ),
+            );
           }
         },
       ),

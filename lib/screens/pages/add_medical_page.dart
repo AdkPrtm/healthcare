@@ -128,7 +128,7 @@ class _AddMedicalPageState extends State<AddMedicalPage> {
               listener: (context, state) {
                 if (state is MedicalhistorySuccess) {
                   Navigator.pushNamedAndRemoveUntil(
-                      context, '/home', (route) => false);
+                      context, '/main', (route) => false);
                 } else if (state is MedicalhistoryFailed) {
                   var msg = state.msg ?? '';
                   CustomWidgets.buildErrorSnackbar(context, msg);

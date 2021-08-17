@@ -1,15 +1,22 @@
 part of 'pages.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String? uid;
 
   @override
   Widget build(BuildContext context) {
-    
     Widget header() {
       return BlocBuilder<UserBloc, UserState>(
         builder: (context, state) {
           if (state is UserSuccess) {
+            this.uid = state.userModel.id;
             return Row(
               children: [
                 Expanded(
@@ -74,7 +81,12 @@ class HomePage extends StatelessWidget {
                   title: 'Medical History',
                   imageUrl: 'assets/images/Illustration2.png',
                   onTap: () {
-                    Navigator.pushNamed(context, '/affirmation');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (builder) => AffirmationPage(uid: uid!),
+                      ),
+                    );
                   },
                 ),
                 CardHomeWidget(
