@@ -8,16 +8,17 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    TextEditingController nameController = TextEditingController();
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
     Widget header() {
       return Column(
         children: [
-          SizedBox(height: 34),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.15),
           Text(
             'Hello Beautiful',
             style: textStyle.copyWith(
@@ -49,7 +50,7 @@ class _SignUpPageState extends State<SignUpPage> {
       );
     }
 
-    Widget loginButton() {
+    Widget signUpButton() {
       return BlocConsumer<UserBloc, UserState>(
         listener: (context, state) {
           if (state is UserSuccess) {
@@ -90,8 +91,11 @@ class _SignUpPageState extends State<SignUpPage> {
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   context.read<UserBloc>().add(
-                        SignUpUser(nameController.text, emailController.text,
-                            passwordController.text),
+                        SignUpUser(
+                          nameController.text,
+                          emailController.text,
+                          passwordController.text,
+                        ),
                       );
                 }
               },
@@ -126,6 +130,11 @@ class _SignUpPageState extends State<SignUpPage> {
               CustomFieldWidget(
                 controller: passwordController,
                 hint: "Password",
+              ),
+              CustomFieldWidget(
+                controller: confirmPasswordController,
+                controller2: passwordController,
+                hint: "Confirm Password",
                 margin: 8,
               ),
               Align(
@@ -138,7 +147,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
               ),
-              loginButton(),
+              signUpButton(),
             ],
           ),
         ),

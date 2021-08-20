@@ -28,6 +28,11 @@ class SignInUser extends UserEvent {
   @override
   List<Object?> get props => [email, password];
 }
+class SignOutUser extends UserEvent {
+
+  @override
+  List<Object?> get props => [];
+}
 
 class UpdateDataUser extends UserEvent {
   final String uid, name, imageUrl;

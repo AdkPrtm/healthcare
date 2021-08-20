@@ -6,9 +6,11 @@ class CustomFieldWidget extends StatefulWidget {
     required this.controller,
     required this.hint,
     this.margin = 16,
+    this.controller2,
   }) : super(key: key);
 
   final TextEditingController controller;
+  final TextEditingController? controller2;
   final String hint;
   final double margin;
 
@@ -25,7 +27,10 @@ class _CustomFieldWidgetState extends State<CustomFieldWidget> {
       margin: EdgeInsets.only(bottom: widget.margin),
       child: TextFormField(
         controller: widget.controller,
-        obscureText: widget.hint == 'Password' ? _showPassword : false,
+        obscureText:
+            widget.hint == 'Password' || widget.hint == 'Confirm Password'
+                ? _showPassword
+                : false,
         style: textStyle.copyWith(
           fontSize: 16,
           fontWeight: medium,
@@ -39,25 +44,27 @@ class _CustomFieldWidgetState extends State<CustomFieldWidget> {
             fontWeight: medium,
             color: kPrimaryColor3,
           ),
-          suffixIcon: widget.hint == 'Password'
-              ? GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _showPassword = !_showPassword;
-                    });
-                  },
-                  child: Icon(
-                    _showPassword ? Icons.visibility_off : Icons.visibility,
-                    color: kPrimaryColor4,
-                  ),
-                )
-              : SizedBox(),
-          suffixIconConstraints: widget.hint == 'Password'
-              ? BoxConstraints(
-                  minWidth: 40,
-                  minHeight: 24,
-                )
-              : BoxConstraints(),
+          suffixIcon:
+              widget.hint == 'Password' || widget.hint == 'Confirm Password'
+                  ? GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _showPassword = !_showPassword;
+                        });
+                      },
+                      child: Icon(
+                        _showPassword ? Icons.visibility_off : Icons.visibility,
+                        color: kPrimaryColor4,
+                      ),
+                    )
+                  : SizedBox(),
+          suffixIconConstraints:
+              widget.hint == 'Password' || widget.hint == 'Confirm Password'
+                  ? BoxConstraints(
+                      minWidth: 40,
+                      minHeight: 24,
+                    )
+                  : BoxConstraints(),
           isDense: true,
           contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           border: OutlineInputBorder(
@@ -93,11 +100,22 @@ class _CustomFieldWidgetState extends State<CustomFieldWidget> {
                     }
                     return null;
                   }
-                : (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your name";
-                    }
-                  },
+                : widget.hint == 'Confirm Password'
+                    ? (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter your password";
+                        } else if (value.length <= 8) {
+                          return "Minimum length password 8";
+                        } else if (value != widget.controller2!.text) {
+                          return "Password should match password";
+                        }
+                        return null;
+                      }
+                    : (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter your name";
+                        }
+                      },
       ),
     );
   }

@@ -24,11 +24,18 @@ class SettingPage extends StatelessWidget {
                       color: kPrimaryColor1,
                     ),
                   ),
-                  SvgPicture.asset(
-                    svgLogout,
-                    color: kPrimaryColor2,
-                    width: 20,
-                    height: 20,
+                  GestureDetector(
+                    onTap: () {
+                      context.read<UserBloc>().add(SignOutUser());
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, '/menu', (route) => false);
+                    },
+                    child: SvgPicture.asset(
+                      svgLogout,
+                      color: kPrimaryColor2,
+                      width: 20,
+                      height: 20,
+                    ),
                   )
                 ],
               ),
@@ -124,8 +131,8 @@ class SettingPage extends StatelessWidget {
               ),
               SizedBox(height: 32),
               GestureDetector(
-                onTap: () => Navigator.pushNamed(context, '/editprofile'),
-                child: ListEditWidget(title: 'Account', svgAsset: svgPerson)),
+                  onTap: () => Navigator.pushNamed(context, '/editprofile'),
+                  child: ListEditWidget(title: 'Account', svgAsset: svgPerson)),
               Divider(),
               ListEditWidget(title: 'Notificantion', svgAsset: svgNotification),
               Divider(),

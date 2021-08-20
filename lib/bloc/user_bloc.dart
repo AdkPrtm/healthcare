@@ -46,6 +46,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           uid: event.uid, name: event.name, pickedImage: event.imageUrl);
       UserModel userModel = await UserService().getUserById(event.uid);
       yield UserSuccess(userModel);
+    } else if (event is SignOutUser) {
+      await AuthService().signOut();
+      yield UserInitial();
     }
   }
 }

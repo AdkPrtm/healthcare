@@ -93,6 +93,7 @@ class _AffirmationPageState extends State<AffirmationPage> {
                 Expanded(
                   child: Center(
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset('assets/images/Illustration6.png'),
                         SizedBox(height: 6),

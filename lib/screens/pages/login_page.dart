@@ -16,7 +16,7 @@ class _LoginPageState extends State<LoginPage> {
     Widget header() {
       return Column(
         children: [
-          SizedBox(height: 40),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.17),
           Text(
             'Welcome to',
             style: textStyle.copyWith(
@@ -183,6 +183,7 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: kBackgroundColor,
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             //from Welcome to Image
             header(),
@@ -198,4 +199,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
