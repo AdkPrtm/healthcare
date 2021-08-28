@@ -134,12 +134,14 @@ class SettingPage extends StatelessWidget {
                   onTap: () => Navigator.pushNamed(context, '/editprofile'),
                   child: ListEditWidget(title: 'Account', svgAsset: svgPerson)),
               Divider(),
+              GestureDetector(
+                  onTap: () => Navigator.pushNamed(context, '/changepassword'),
+                  child: ListEditWidget(
+                      title: 'Change Password', svgAsset: svgSecurity)),
+              Divider(),
               ListEditWidget(title: 'Notificantion', svgAsset: svgNotification),
               Divider(),
               ListEditWidget(title: 'Appearance', svgAsset: svgEye),
-              Divider(),
-              ListEditWidget(
-                  title: 'Privacy & Security', svgAsset: svgSecurity),
               Divider(),
             ],
           ),

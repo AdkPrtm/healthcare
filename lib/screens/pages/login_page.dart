@@ -16,7 +16,7 @@ class _LoginPageState extends State<LoginPage> {
     Widget header() {
       return Column(
         children: [
-          SizedBox(height: MediaQuery.of(context).size.height * 0.17),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.1),
           Text(
             'Welcome to',
             style: textStyle.copyWith(
@@ -50,13 +50,17 @@ class _LoginPageState extends State<LoginPage> {
 
     Widget loginButton() {
       return BlocConsumer<UserBloc, UserState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is UserSuccess) {
             Navigator.pushNamedAndRemoveUntil(
                 context, '/main', (route) => false);
           } else if (state is UserFailed) {
             var msg = state.msg ?? '';
-            CustomWidgets.buildErrorSnackbar(context, msg);
+            if (msg != 'Please verify your email address first') {
+              CustomWidgets.buildErrorSnackbar(context, msg);
+            } else {
+              await warningDialog(context);
+            }
           }
         },
         builder: (context, state) {
@@ -131,13 +135,106 @@ class _LoginPageState extends State<LoginPage> {
                 hint: 'Password',
                 margin: 8,
               ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  'Forgot Password?',
-                  style: textStyle.copyWith(
-                    fontWeight: medium,
-                    color: kPrimaryColor1,
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (builder) {
+                      return AlertDialog(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Forgot Password',
+                              style: poppinsStyle.copyWith(
+                                fontSize: 16,
+                                fontWeight: medium,
+                                color: kPrimaryColor1,
+                              ),
+                            ),
+                            Divider(),
+                            Text(
+                              'Your Email Address',
+                              style: poppinsStyle.copyWith(
+                                fontWeight: medium,
+                                color: kPrimaryColor1,
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            CustomFieldWidget(
+                              controller: emailController,
+                              hint: 'Email',
+                            ),
+                          ],
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () async {
+                              if (emailController.text != '' &&
+                                  RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                                      .hasMatch(emailController.text)) {
+                                if (await AuthService().fogetPassword(
+                                    email: emailController.text)) {
+                                  Navigator.pop(context);
+                                  CustomWidgets.buildErrorSnackbar(context,
+                                      'Please check the verification main in your inbox.');
+                                } else {
+                                  Navigator.pop(context);
+                                  CustomWidgets.buildErrorSnackbar(context,
+                                      'No user exists with this email.');
+                                }
+                              } else {
+                                Navigator.pop(context);
+                                CustomWidgets.buildErrorSnackbar(
+                                    context, 'Please enter your email address');
+                              }
+                            },
+                            child: Text(
+                              'Reset Password',
+                              style: textStyle.copyWith(
+                                fontSize: 16,
+                                fontWeight: medium,
+                                color: kPrimaryColor1,
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 3),
+                              backgroundColor: kPrimaryColor1,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: Text(
+                              'Close',
+                              style: textStyle.copyWith(
+                                fontSize: 16,
+                                fontWeight: medium,
+                                color: kBackgroundColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    'Forgot Password?',
+                    style: textStyle.copyWith(
+                      fontWeight: medium,
+                      color: kPrimaryColor1,
+                    ),
                   ),
                 ),
               ),
@@ -196,6 +293,77 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
+    );
+  }
+
+  warningDialog(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (builder) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Login Failed',
+                style: poppinsStyle.copyWith(
+                  fontSize: 16,
+                  fontWeight: medium,
+                  color: kPrimaryColor1,
+                ),
+              ),
+              Divider(),
+              Text(
+                'Your account has not yet been verified. Please check the verification main in your inbox.',
+                style: poppinsStyle.copyWith(
+                  fontWeight: medium,
+                  color: kPrimaryColor1,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                await AuthService().resendEmail(
+                    email: emailController.text,
+                    password: passwordController.text);
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Resend Email',
+                style: textStyle.copyWith(
+                  fontSize: 16,
+                  fontWeight: medium,
+                  color: kPrimaryColor1,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                backgroundColor: kPrimaryColor1,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Text(
+                'Close',
+                style: textStyle.copyWith(
+                  fontSize: 16,
+                  fontWeight: medium,
+                  color: kBackgroundColor,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

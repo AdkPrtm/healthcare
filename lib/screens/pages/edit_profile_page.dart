@@ -17,8 +17,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
-      // final imageTemp = File(image.path);
-      print(image.name);
       setState(() => this.image = image);
     } on PlatformException catch (e) {
       print('Failed to pick image $e');
@@ -249,8 +247,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
             child: TextButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  print(uid);
-                  print(image == null ? '' : image!.path);
                   context.read<UserBloc>().add(UpdateDataUser(uid!,
                       nameController.text, image == null ? '' : image!.path));
                 }

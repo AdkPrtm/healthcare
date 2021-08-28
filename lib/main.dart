@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:healthcare/bloc/medicalhistory_bloc.dart';
+import 'package:healthcare/bloc/page_bloc.dart';
 import 'package:healthcare/bloc/user_bloc.dart';
 import 'package:healthcare/screens/pages/pages.dart';
 
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => UserBloc()),
         BlocProvider(create: (context) => MedicalhistoryBloc()),
+        BlocProvider(create: (context) => PageBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -38,6 +40,7 @@ class MyApp extends StatelessWidget {
           '/main': (context) => MainPage(),
           '/addmedical': (context) => AddMedicalPage(),
           '/editprofile': (context) => EditProfilePage(),
+          '/changepassword': (context) => ChangePasswordPage(),
         },
       ),
     );

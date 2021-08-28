@@ -18,7 +18,7 @@ class _SignUpPageState extends State<SignUpPage> {
     Widget header() {
       return Column(
         children: [
-          SizedBox(height: MediaQuery.of(context).size.height * 0.15),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.1),
           Text(
             'Hello Beautiful',
             style: textStyle.copyWith(
@@ -54,8 +54,7 @@ class _SignUpPageState extends State<SignUpPage> {
       return BlocConsumer<UserBloc, UserState>(
         listener: (context, state) {
           if (state is UserSuccess) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/main', (route) => false);
+            successfullyDialog(context);
           } else if (state is UserFailed) {
             var msg = state.msg ?? '';
             CustomWidgets.buildErrorSnackbar(context, msg);
@@ -137,16 +136,6 @@ class _SignUpPageState extends State<SignUpPage> {
                 hint: "Confirm Password",
                 margin: 8,
               ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  'Forgot Password?',
-                  style: textStyle.copyWith(
-                    fontWeight: medium,
-                    color: kPrimaryColor1,
-                  ),
-                ),
-              ),
               signUpButton(),
             ],
           ),
@@ -167,12 +156,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 color: Color(0xFF82799D),
               ),
             ),
-            SizedBox(width: 8),
+            SizedBox(width: 5),
             GestureDetector(
               onTap: () {
                 Navigator.pushNamed(context, '/login');
-                Navigator.pushNamedAndRemoveUntil(
-                    context, '/main', (route) => false);
               },
               child: Text(
                 'Login',
@@ -198,6 +185,61 @@ class _SignUpPageState extends State<SignUpPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Future<dynamic> successfullyDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (builder) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'REGISTRATION SUCCESS',
+                style: poppinsStyle.copyWith(
+                  fontSize: 16,
+                  fontWeight: medium,
+                  color: kPrimaryColor1,
+                ),
+              ),
+              Divider(),
+              Text(
+                'Thank you. We have sent you email to ${emailController.text}. \nPlease click the link in that message to activate your account.',
+                style: poppinsStyle.copyWith(
+                  fontWeight: medium,
+                  color: kPrimaryColor1,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: TextButton.styleFrom(
+                fixedSize: Size(100, 40),
+                backgroundColor: kPrimaryColor1,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Text(
+                'Close',
+                style: textStyle.copyWith(
+                  fontSize: 16,
+                  fontWeight: medium,
+                  color: kBackgroundColor,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

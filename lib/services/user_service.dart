@@ -40,10 +40,8 @@ class UserService {
     // _collectionReference.doc(userModel.id).update(data)
     try {
       if (pickedImage != '') {
-        print(pickedImage);
         await storageRef.putFile(File(pickedImage));
         final imageUrl = await storageRef.getDownloadURL();
-        print(imageUrl);
         _collectionReference.doc(uid).update({
           'name': name,
           'imageUrl': imageUrl,

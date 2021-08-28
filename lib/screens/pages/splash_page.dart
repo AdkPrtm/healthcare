@@ -20,11 +20,11 @@ class _SplashPageState extends State<SplashPage> {
         Duration(seconds: 4),
         () {
           User? user = FirebaseAuth.instance.currentUser;
-          if (user == null) {
-            Navigator.pushReplacementNamed(context, '/intro');
-          } else {
+          if (user != null && user.emailVerified) {
             context.read<UserBloc>().add(LoadUser(user.uid));
             Navigator.pushReplacementNamed(context, '/main');
+          } else {
+            Navigator.pushReplacementNamed(context, '/intro');
           }
         },
       );

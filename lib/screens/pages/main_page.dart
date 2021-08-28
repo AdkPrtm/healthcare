@@ -8,35 +8,22 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  late int currentIndex;
-  late PageController pageController;
-
-  @override
-  void initState() {
-    super.initState();
-    currentIndex = 0;
-    pageController = PageController(initialPage: currentIndex);
-  }
-
   @override
   Widget build(BuildContext context) {
-    Widget buildContent() {
-      return PageView(
-        controller: pageController,
-        onPageChanged: (index) {
-          setState(() {
-            currentIndex = index;
-          });
-        },
-        children: [
-          HomePage(),
-          NotificationPage(),
-          SettingPage(),
-        ],
-      );
+    Widget buildContent(int currentIndex) {
+      switch (currentIndex) {
+        case 0:
+          return HomePage();
+        case 1:
+          return NotificationPage();
+        case 2:
+          return SettingPage();
+        default:
+          return HomePage();
+      }
     }
 
-    Widget customButtonNavigation() {
+    Widget customButtonNavigation(int currentIndex) {
       return Align(
         alignment: Alignment.bottomCenter,
         child: Container(
@@ -48,10 +35,7 @@ class _MainPageState extends State<MainPage> {
             showSelectedLabels: false,
             showUnselectedLabels: false,
             onTap: (value) {
-              setState(() {
-                currentIndex = value;
-                pageController.jumpToPage(value);
-              });
+              context.read<PageBloc>().add(PageTapped(buttomNavBar: value));
             },
             items: [
               BottomNavigationBarItem(
@@ -79,14 +63,18 @@ class _MainPageState extends State<MainPage> {
       );
     }
 
-    return Scaffold(
-      backgroundColor: kBackgroundColor,
-      body: Stack(
-        children: [
-          buildContent(),
-          customButtonNavigation(),
-        ],
-      ),
+    return BlocBuilder<PageBloc, PageState>(
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: kBackgroundColor,
+          body: Stack(
+            children: [
+              buildContent((state as PageInitial).buttomNavBar),
+              customButtonNavigation((state).buttomNavBar),
+            ],
+          ),
+        );
+      },
     );
   }
 }

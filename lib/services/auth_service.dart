@@ -11,6 +11,8 @@ class AuthService {
     try {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
+      userCredential.user!.updateDisplayName(name);
+      await userCredential.user!.sendEmailVerification();
       UserModel userModel = UserModel(
         id: userCredential.user!.uid,
         name: name,
@@ -21,11 +23,9 @@ class AuthService {
       return SignInSignUpResult(userModel: userModel);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
         return SignInSignUpResult(
             message: 'The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
         return SignInSignUpResult(
             message: 'The account already exists for that email.');
       }
@@ -38,18 +38,57 @@ class AuthService {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      UserModel userModel =
-          await UserService().getUserById(userCredential.user!.uid);
-      return SignInSignUpResult(userModel: userModel);
+      if (userCredential.user!.emailVerified) {
+        UserModel userModel =
+            await UserService().getUserById(userCredential.user!.uid);
+        return SignInSignUpResult(userModel: userModel);
+      } else {
+        return SignInSignUpResult(
+            message: 'Please verify your email address first');
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user exists with this email.');
         return SignInSignUpResult(message: 'No user exists with this email.');
       } else if (e.code == 'wrong-password') {
-        print('Incorrect Password.');
         return SignInSignUpResult(message: 'Incorrect Password.');
       }
       throw e;
+    }
+  }
+
+  Future resendEmail({required String email, required String password}) async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      await userCredential.user!.sendEmailVerification();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<bool> fogetPassword({required String email}) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      return true;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        return false;
+      }
+      throw e;
+    }
+  }
+
+  Future<bool> changePassword(
+      {required String email,
+      required String oldpassword,
+      required String password}) async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+          email: email, password: oldpassword);
+      await userCredential.user!.updatePassword(password);
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 

@@ -13,6 +13,7 @@ Color kBackgroundColor = Color(0xFFFFFFFF);
 
 // TEXTSTYLE
 TextStyle textStyle = GoogleFonts.raleway();
+TextStyle poppinsStyle = GoogleFonts.poppins();
 
 // FONT WEIGHT
 FontWeight light = FontWeight.w300;

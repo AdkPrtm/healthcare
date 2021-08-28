@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.andhika.healthcare">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="Health Care"
         android:icon="@mipmap/ic_launcher">

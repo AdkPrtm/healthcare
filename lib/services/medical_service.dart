@@ -15,10 +15,9 @@ class MedicalService {
         'description': description,
         'checkDate': checkDate.toString(),
         'inputDate': inputDate.toString(),
-      }).then((value) => print(value));
+      });
       return MedicalHistoryResult(true);
     } catch (e) {
-      print(e.toString());
       return MedicalHistoryResult(false);
     }
   }

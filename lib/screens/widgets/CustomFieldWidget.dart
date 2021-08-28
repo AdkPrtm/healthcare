@@ -95,7 +95,7 @@ class _CustomFieldWidgetState extends State<CustomFieldWidget> {
                 ? (value) {
                     if (value == null || value.isEmpty) {
                       return "Please enter your password";
-                    } else if (value.length <= 8) {
+                    } else if (value.length < 9) {
                       return "Minimum length password 8";
                     }
                     return null;
@@ -103,8 +103,8 @@ class _CustomFieldWidgetState extends State<CustomFieldWidget> {
                 : widget.hint == 'Confirm Password'
                     ? (value) {
                         if (value == null || value.isEmpty) {
-                          return "Please enter your password";
-                        } else if (value.length <= 8) {
+                          return "Please enter your confirm password";
+                        } else if (value.length < 9) {
                           return "Minimum length password 8";
                         } else if (value != widget.controller2!.text) {
                           return "Password should match password";

@@ -15,59 +15,7 @@ class CardAffirmationWidget extends StatelessWidget {
     final String _now = DateFormat.yMMMMd().format(checkDate);
     return GestureDetector(
       onTap: () {
-        showDialog(
-          context: context,
-          builder: (builder) {
-            return AlertDialog(
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _now,
-                    style: textStyle.copyWith(
-                      fontSize: 16,
-                      fontWeight: medium,
-                      color: kPrimaryColor1,
-                    ),
-                  ),
-                  Divider(),
-                  Text(
-                    description,
-                    style: textStyle.copyWith(
-                      fontWeight: medium,
-                      color: kPrimaryColor1,
-                    ),
-                  ),
-                ],
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  style: TextButton.styleFrom(
-                    fixedSize: Size(100, 40),
-                    backgroundColor: kPrimaryColor1,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: Text(
-                    'Close',
-                    style: textStyle.copyWith(
-                      fontSize: 16,
-                      fontWeight: medium,
-                      color: kBackgroundColor,
-                    ),
-                  ),
-                ),
-              ],
-            );
-          },
-        );
+        dataDiaolog(context, _now);
       },
       child: Container(
         width: double.infinity,
@@ -104,5 +52,61 @@ class CardAffirmationWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<dynamic> dataDiaolog(BuildContext context, String _now) {
+    return showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _now,
+                  style: textStyle.copyWith(
+                    fontSize: 16,
+                    fontWeight: medium,
+                    color: kPrimaryColor1,
+                  ),
+                ),
+                Divider(),
+                Text(
+                  description,
+                  style: textStyle.copyWith(
+                    fontWeight: medium,
+                    color: kPrimaryColor1,
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: TextButton.styleFrom(
+                  fixedSize: Size(100, 40),
+                  backgroundColor: kPrimaryColor1,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Text(
+                  'Close',
+                  style: textStyle.copyWith(
+                    fontSize: 16,
+                    fontWeight: medium,
+                    color: kBackgroundColor,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
   }
 }
